@@ -2,7 +2,7 @@
 import os
 import requests
 import utils
-import streamlit
+import streamlit as st
 
 def generate_ai_insights():
     transactions = utils.get_transactions()
