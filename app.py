@@ -1,8 +1,10 @@
 #stream app front end
 import streamlit as st
+import matplotlib.pyplot as plt
 from datetime import date
 
 import utils
+import ai
 from db import initialise_database
 
 #init
@@ -46,24 +48,29 @@ if st.button("Add Transaction"):
 #get transcation data
 transactions = utils.get_transactions()
 
+#all transactions section
+st.divider()
+st.subheader("All Transactions")
+
+col1, col2 = st.columns(2)
 #search bar
-search = st.text_input("Search category")
-if search:
-    transactions = [t for t in transactions if search.lower() in t.category.lower()]
+with col1:
+    search = st.text_input("Search category")
+    if search:
+        transactions = [t for t in transactions if search.lower() in t.category.lower()]
 
 #sorting
-sort_option = st.selectbox("Sort by", ["Date", "Amount"])
-if sort_option == "Amount":
-    transactions.sort(key=lambda x: x.amount)
-else:
-    transactions.sort(key=lambda x: x.date)
+with col2:
+    sort_option = st.selectbox("Sort by", ["Date", "Amount"])
+    if sort_option == "Amount":
+        transactions.sort(key=lambda x: x.amount)
+    else:
+        transactions.sort(key=lambda x: x.date)
 
-#all transactions section
-st.subheader("All Transactions")
 st.table([
     {
         "ID": t.id,
-        "Amount": t.amount,
+        "Amount": f"{t.amount:.3f}",
         "Category": t.category,
         "Type": t.type,
         "Date": t.date
@@ -72,8 +79,8 @@ st.table([
 ])
 
 #delete transaction
-col3, col4 = st.columns(2)
-with col3:
+col1, col2 = st.columns(2)
+with col1:
     st.subheader("Delete Transaction")
     delete_id = st.number_input("Enter Transaction ID to delete", step=1, min_value=1)
 
@@ -91,10 +98,44 @@ with col3:
             st.error(f"Error: {e}")
 
 #totals section
-with col4:
+with col2:
     st.subheader("Totals per Category")
     totals = utils.calculate_totals(transactions)
     st.table([
-        { "Total": total, "Category": category }
+        { "Total": f"{total:.3f}", "Category": category }
         for category, total in totals.items() 
     ])
+
+#data analytics (data science bonus)
+st.divider()
+col1, col2 = st.columns(2)
+income, expense, balance = utils.calculate_summary(transactions)
+
+with col1:
+    st.subheader("Financial Summary")
+    st.metric("Income", f"{income:.3f}")
+    st.metric("Expense", f"{expense:.3f}")
+    st.metric("Balance", f"{balance:.3f}")
+
+with col2:
+    st.subheader("Income vs Expense")
+    if income > 0 or expense > 0:
+        fig, ax = plt.subplots()
+        ax.pie(
+            [income, expense],
+            labels=["Income", "Expense"],
+            autopct="%1.1f%%"
+        )
+        st.pyplot(fig)
+    else:
+        st.info("No transaction data yet.")
+
+#ai feature
+st.divider()
+st.subheader("AI Insights")
+
+if st.button("Generate AI Insights"):
+    with st.spinner("Generating insights..."):
+        insight = ai.generate_ai_insights()
+
+    st.write(insight)

@@ -1,7 +1,7 @@
 #data access and helper functions
 from db import Session, Transaction
 
-
+#database accesses
 def create_transaction(amount, category, transaction_type, transaction_date):
     session = Session()
     try:
@@ -43,6 +43,7 @@ def delete_transaction(transaction_to_delete):
         session.close()
 
 
+#helper functions
 def calculate_totals(transactions):
     totals = {}
 
@@ -56,3 +57,17 @@ def calculate_totals(transactions):
             totals[t.category] += t.amount
 
     return totals
+
+def calculate_summary(transactions):
+    income = 0
+    expense = 0
+
+    for t in transactions:
+        if t.type == "Income":
+            income += t.amount
+        else:
+            expense += t.amount
+
+    balance = income - expense
+
+    return income, expense, balance

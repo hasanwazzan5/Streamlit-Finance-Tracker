@@ -1,24 +1,44 @@
-# 💰 Personal Finance Tracker (Streamlit)
+# 💰 Personal Finance Tracker (Streamlit + AI)
 
 A simple personal finance tracking web app built with Python and Streamlit.  
-Users can add, view, filter, sort, and delete financial transactions, and analyze income vs expenses.
+The app allows users to manage transactions, analyze spending, and generate AI-powered financial insights.
+
+---
+
+## 🚀 Live Demo
+(https://app-finance-tracker-ukmkgchmilstdbkwtvsguk.streamlit.app/)
 
 ---
 
 ## 📌 Features
 
-### Core Features
+### 🧾 Core Features
 - Add income and expense transactions
-- Categorize transactions
+- Categorise transactions
 - Track transaction date
-- Delete transactions by ID
-- View all stored transactions
+- Delete transactions
+- Input validation and error handling
 
-### Data Tools
+---
+
+### 🔍 Data Controls
 - Search transactions by category
 - Sort by date or amount
-- Input validation (prevents empty categories and invalid values)
-- Error handling for safe database operations
+- View full transaction history
+
+---
+
+### 📊 Analytics Dashboard (Data Science Bonus)
+- Income vs expense summary
+- Financial balance calculation
+- Data visualization using charts
+
+---
+
+### 🤖 AI Feature (AI Bonus)
+- AI-generated financial insights
+- Provides personalized recommendations
+- Uses a real model API (cloud-based)
 
 ---
 
@@ -27,19 +47,11 @@ Users can add, view, filter, sort, and delete financial transactions, and analyz
 - Streamlit
 - SQLAlchemy
 - SQLite
+- AI API
 
 ---
 
 ## 📁 Project Structure
-project/
-│
-├── app.py # Streamlit UI (main app)
-├── db.py # Database connection setup
-├── models.py # Database schema (Transaction model)
-├── utils.py # Helper functions (e.g. totals calculation)
-├── finance.db # SQLite database file (auto-generated)
-├── requirements.txt
-└── README.md
 
 ---
 
